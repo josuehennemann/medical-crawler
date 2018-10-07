@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 const (
@@ -27,6 +28,7 @@ type StdCrawler struct {
 	items        map[string]struct{} //mapa para ir salvando os itens encontrados
 	exists       bool                //flag que vai indicando se o registro existe no mapa ou nao
 	httpResponse *http.Response
+	sync.Mutex
 }
 
 //inicializa o mapa
@@ -42,6 +44,8 @@ func (this *StdCrawler) add(name, email string) {
 	if !strings.Contains(email, "@") {
 		return
 	}
+	this.Lock()
+	defer this.Unlock()
 	if _, this.exists = this.items[name+MAGIC_STRING+email]; !this.exists {
 		this.items[name+MAGIC_STRING+email] = struct{}{}
 	}

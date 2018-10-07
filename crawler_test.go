@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"testing"
 	"os"
+	"testing"
 )
 
 func TestCrawlerGuiaComercialBahia(t *testing.T) {
@@ -26,6 +26,12 @@ func TestCrawlerGuiaComercialBahiaWrite(t *testing.T) {
 
 func TestCrawlerAprofemWrite(t *testing.T) {
 	crawler := NewCrawlerAprofem()
+	crawler.GetContent()
+	crawler.Write(os.Stdout)
+}
+
+func TestCrawlerTelelistaWrite(t *testing.T) {
+	crawler := NewCrawlerTelelista()
 	crawler.GetContent()
 	crawler.Write(os.Stdout)
 }
