@@ -15,15 +15,15 @@ func main() {
 
 	checkError(err)
 	wg := sync.WaitGroup{}
-	for _, v := range crawlerList {
+	for _, crawler := range crawlerList {
+		v := crawler
 		wg.Add(1)
-		go func() {
+		go func(v crawlerItem) {
 			defer wg.Done()
 			v.GetContent()
 			v.Write(file)
-		}()
+		}(v)
 	}
-
 	wg.Wait()
 }
 

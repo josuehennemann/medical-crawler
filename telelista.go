@@ -16,9 +16,10 @@ const (
 
 //lista de estado/cidade que vai fazer o replace na url da telelista
 var (
-	replaceTelelista = map[string][]string{"rs": []string{"porto+alegre", "santa+maria", "pelotas", "caxias+do+sul"},
-		"sp": []string{"sao+paulo", "santos", "campinas", "ribeirao+preto"},
-		"rj": []string{"rio+de+janeiro", "niteroi", "teresopolis", "macae"},
+	replaceTelelista = map[string][]string{
+		"rs": []string{"porto+alegre", "santa+maria", "pelotas", "caxias+do+sul"},
+		"sp": []string{"sao+paulo", "santos", "campinas", "ribeirao+preto","bauru","sao+caetano+do+sul","guaruja"},
+		"rj": []string{"rio+de+janeiro", "niteroi", "teresopolis", "macae", "sao+goncalo"},
 		"df": []string{"brasilia"},
 		"pr": []string{"curitiba", "londrina", "cascavel", "maringa"},
 		"sc": []string{"florianopolis", "blumenau", "chapeco", "itajai"},
@@ -46,12 +47,15 @@ func (this *CrawlerTelelistalista) Request() {
 	this.BasicRequest()
 }
 func (this *CrawlerTelelistalista) GetContent() {
+
 	for uf, cities := range replaceTelelista {
-		this.page = 1
+	
 		for _, city := range cities {
+			this.page = 1
 			urlbase := URL_TELELISTA
 			urlbase = strings.Replace(urlbase, "{{estado}}", uf, -1)
 			urlbase = strings.Replace(urlbase, "{{cidade}}", city, -1)
+
 			for {
 				this.url = strings.Replace(urlbase, "{{pagina}}", strconv.FormatUint(uint64(this.page), 10), -1)
 				if this.makeRequestAndParse() {
@@ -63,9 +67,12 @@ func (this *CrawlerTelelistalista) GetContent() {
 }
 
 func (this *CrawlerTelelistalista) makeRequestAndParse() bool {
-	//	println(this.url)
+	//println(this.url)
 	this.Request()
 	defer this.httpResponse.Body.Close()
+	if this.httpResponse.StatusCode == 404 {
+		return true
+	}
 	this.getDocument()
 	if this.finish() {
 		return true
