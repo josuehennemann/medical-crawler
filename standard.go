@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"github.com/PuerkitoBio/goquery"
 	"io"
 	"net/http"
 	"strings"
@@ -24,6 +25,7 @@ type StdCrawler struct {
 	items        map[string]struct{} //mapa para ir salvando os itens encontrados
 	exists       bool                //flag que vai indicando se o registro existe no mapa ou nao
 	httpResponse *http.Response
+		doc  *goquery.Document
 }
 
 //inicializa o mapa
@@ -35,6 +37,11 @@ func (this *StdCrawler) getResponse() *http.Response {
 	return this.httpResponse
 }
 
+func (this *StdCrawler) getDocument() {
+	var e error
+	this.doc, e = goquery.NewDocumentFromReader(this.httpResponse.Body)
+	checkError(e)
+}
 func (this *StdCrawler) getUrl() string {
 	return this.url
 }

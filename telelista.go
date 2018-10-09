@@ -40,7 +40,6 @@ func NewCrawlerTelelista() *CrawlerTelelistalista {
 type CrawlerTelelistalista struct {
 	StdCrawler
 	page uint16
-	doc  *goquery.Document
 }
 
 func (this *CrawlerTelelistalista) Request() {
@@ -153,11 +152,6 @@ func (this *CrawlerTelelistalista) getDomain(url string) (domain string) {
 		domain = destination[3][:idx]
 	}
 	return
-}
-func (this *CrawlerTelelistalista) getDocument() {
-	var e error
-	this.doc, e = goquery.NewDocumentFromReader(this.httpResponse.Body)
-	checkError(e)
 }
 
 //valida se chegou na ultima pagina

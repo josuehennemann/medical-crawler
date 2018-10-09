@@ -20,6 +20,7 @@ func main() {
 		wg.Add(1)
 		go func(v crawlerItem) {
 			defer wg.Done()
+			//println(v.getUrl())
 			v.GetContent()
 			v.Write(file)
 		}(v)
@@ -28,13 +29,14 @@ func main() {
 }
 
 //lista generica de usuarios de email
-var genericUserEmail = []string{"contato", "sac", "faleconosco"}
+var genericUserEmail = []string{"contato"}// "sac", "faleconosco"}
 
 //lista de crawlers a serem executados
 var crawlerList = []crawlerItem{
 	NewCrawlerGuiaComercialBahia(),
 	NewCrawlerAprofem(),
 	NewCrawlerTelelista(),
+	NewCrawlerAbcpf(),	
 }
 
 //lock para garantir a escrita no arquivo

@@ -36,6 +36,12 @@ func TestCrawlerTelelistaWrite(t *testing.T) {
 	crawler.Write(os.Stdout)
 }
 
+func TestCrawlerCrawlerAbcpfWrite(t *testing.T) {
+	crawler := NewCrawlerAbcpf()
+	crawler.GetContent()
+	crawler.Write(os.Stdout)
+}
+
 func genericTest(t *testing.T, crawler crawlerItem, getContent bool) {
 	crawler.Request()
 	httpResponse := crawler.getResponse()
